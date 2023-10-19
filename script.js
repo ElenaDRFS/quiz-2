@@ -1,23 +1,26 @@
-let data;
-let obtenerPreguntas = async function questionsGenerator (){
+//función que genera un array de 10 objetos de preguntas
+async function questionsGenerator (){
     let response = await fetch ('https://opentdb.com/api.php?amount=10&category=12&difficulty=easy&type=multiple');
-    data = await response.json();
-    console.log(data)
-    
-    
+    let data = await response.json();
+    let results = data.results;
+    return results;
+   
 }
 
 
-function pintarQuiz (){
-    let questions = data.results;
+async function pintarQuiz (){
+    let questions = await questionsGenerator();
+
+    console.log(questions);
+    
     questions.forEach((element => {
         let title = element.question;
         let correct = element.correct_answer;
         let incorrect = element.incorrect_answers;
 
-                    // console.log(title)
-                    // console.log(correct)
-                    // console.log(incorrect)
+                    console.log(title)
+                    console.log(correct)
+                    console.log(incorrect)
 
         //template string para generar formulario, dentro de la función porque cuando haga el fetch es cuando se pintan
 
@@ -46,6 +49,8 @@ function pintarQuiz (){
     
     }));  
 }
+
+pintarQuiz();
 
 //validacionesks
 let form = document.getElementById('formulario');
