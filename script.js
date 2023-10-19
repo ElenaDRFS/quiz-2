@@ -73,12 +73,12 @@ document
         localStorage.setItem("players", JSON.stringify(recoveredData));
       }
       
-      Swal.fire({
+      /*Swal.fire({
         icon: 'error',
         title: 'Oops...',
         text: 'Something went wrong!',
         footer: '<button class="boton" type="submit"><a href="./question.html">Start Quiz!</a></button>'
-      })
+      })*/
       
 
   
@@ -87,9 +87,9 @@ document
 
 
 
-  <button class="boton" type="submit"><a href="./question.html">Start Quiz!</a></button>
+//<button class="boton" type="submit"><a href="./question.html">Start Quiz!</a></button>
 //validacionesks
-let form = document.getElementById("formulario");
-let score = 0; //se irá sumando si la pregunta es correcta. luego este score se pinta en la tabla
+//let form = document.getElementById("formulario");
+//let score = 0; //se irá sumando si la pregunta es correcta. luego este score se pinta en la tabla
 
 //cómo validar? if input checked === ans1 {score++} else if input checked === ans 2,3,4 {score + 0}
