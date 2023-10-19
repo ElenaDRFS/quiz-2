@@ -11,7 +11,7 @@ async function questionsGenerator (){
 async function pintarQuiz (){
     let questions = await questionsGenerator();
 
-    console.log(questions);
+    // console.log(questions);
     
     questions.forEach((element => {
         let title = element.question;
@@ -42,15 +42,28 @@ async function pintarQuiz (){
 
                     </section>
 
-                    <input type="button" value="Atrás" class="quizbutton" id="anterior">
-                    <input type="button" value="Ver resultado" class="quizbutton" id="resultado">
-                    <input type="button" value="Siguiente" class="quizbutton" id="siguiente">`;
+                    <input type="button" value="Back" class="quizbutton" id="back">
+                    <input type="button" value="Checked" class="quizbutton" id="checked">
+                    <input type="button" value="Next" class="quizbutton" id="next">`;
 
     
     }));  
 }
 
 pintarQuiz();
+
+
+//funcionalidad botones 
+
+//<button class="quizbutton" id="startHome" type="submit">Start Quiz!</button>
+document.getElementById('startHome').addEventListener('submit', function(event){
+    event.preventDefault();
+    let nombre = event.target.name.value; 
+    localStorage.setItem('players',`${nombre}`)
+
+})
+
+
 
 //validacionesks
 let form = document.getElementById('formulario');
