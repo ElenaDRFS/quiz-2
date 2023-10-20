@@ -1,9 +1,3 @@
-//función que genera un array de 10 objetos de preguntas
-
-let questions = [];
-
-
-
 async function questionsGenerator() {
   let response = await fetch(
     "https://opentdb.com/api.php?amount=10&category=12&difficulty=easy&type=multiple"
@@ -22,52 +16,41 @@ async function startQuiz(){
   return preguntas;
 }
 
-// questions = [...questions[0]];
+async function pintarQuiz() {
+    let start = await questionsGenerator();
+    console.log(start);
+    start.forEach((element) => {
+    let title = element.question;
+    let correct = element.correct_answer;
+    let incorrect = element.incorrect_answers;
 
-
-
-// console.log(questionsJoined)
-
-// async function pintarQuiz() {
-  
-//   console.log(questions);
-
-// //   results.forEach((element) => {
-//     let title = element.question;
-//     let correct = element.correct_answer;
-//     let incorrect = element.incorrect_answers;
-
-    // console.log(title)
-    // console.log(correct)
-    // console.log(incorrect)
 
     //template string para generar formulario, dentro de la función porque cuando haga el fetch es cuando se pintan
 
-//     let form = document.getElementById("formulario");
-//     form.innerHTML = `<section id="container">
-//                     <h1>${title}</h1>
-//                     <label for="asn1" id="opt1" clas="answers">${correct}</label>
-//                     <input type="radio" name="answer" id="ans1">
+    let form = document.getElementById("formulario");
+    form.innerHTML = `<section id="container">
+                    <h1>${title}</h1>
+                    <label for="asn1" id="opt1" clas="answers">${correct}</label>
+                    <input type="radio" name="answer" id="ans1">
 
-//                     <label for="ans2" id="opt2" clas="answers">${incorrect[0]}</label>
-//                     <input type="radio" name="answer" id="ans2">
+                    <label for="ans2" id="opt2" clas="answers">${incorrect[0]}</label>
+                    <input type="radio" name="answer" id="ans2">
 
 
-//                     <label for="ans3" id="opt3" clas="answers">${incorrect[1]}</label>
-//                     <input type="radio" name="answer" id="ans3">
+                    <label for="ans3" id="opt3" clas="answers">${incorrect[1]}</label>
+                    <input type="radio" name="answer" id="ans3">
 
-//                     <label for="ans4" id="opt4" clas="answers">${incorrect[2]}</label>
-//                     <input type="radio" name="answer" id="ans4">
+                    <label for="ans4" id="opt4" clas="answers">${incorrect[2]}</label>
+                    <input type="radio" name="answer" id="ans4">
 
-//                     </section>
+                    </section>
 
-//                     <input type="button" value="Atrás" class="quizbutton" id="anterior">
+                    <input type="button" value="Atrás" class="quizbutton" id="anterior">
                      
-//                     <input type="submit" value="Siguiente" class="quizbutton" id="siguiente">`; 
-// //   });
-// // }
+                    <input type="submit" value="Siguiente" class="quizbutton" id="siguiente">`; 
+  });
+}
 
-// pintarQuiz();
 
 // funcionalidad botones 
 
@@ -91,12 +74,7 @@ if(document.title === 'Jukebox Quiz - Home'){
       }
 
       window.location.href = './question.html';
-      // Swal.fire({
-      //   icon: 'success',
-      //   title: 'Well done!',
-      //   text: 'Are you ready to play? Press the button!',
-      //   footer: '<button class="boton" type="submit"><a href="./question.html">Start Quiz!</a></button>'
-      // })
+      
 
       
     });
@@ -104,8 +82,9 @@ if(document.title === 'Jukebox Quiz - Home'){
 } 
 if(document.title === 'Quiz'){
   startQuiz();
-
+ 
 }
+pintarQuiz();
 
 
 // //botón next
