@@ -1,13 +1,13 @@
 :root {
     --black: rgb(0, 0, 0);
-    --yellow: rgb(251, 248, 204);
+    --yellow: #fbf8cc;
     --champagnePink: #fde4cf;
     --teaRose: #ffcfd2;
     --pinkLavender: #f1c0e8;
     --mauve: #cfbaf0;
     --jordyBlue: #a3c4f3;
     --nonPhotoBlue: #90dbf4;
-    --electricBlue: rgb(142, 236, 245);
+    --electricBlue: #8eecf5;
     --aquamarine: #98f5e1;
     --celadon: #b9fbc0;
 }
@@ -71,6 +71,16 @@ label {
     }
   }
 
+
+ 
+label:hover{
+    background-color: var(--teaRose) !important;
+}
+
+
+
+
+
 p{
     font-family: Notesby;
     font-size: 2em;
@@ -95,6 +105,14 @@ h1{
 
 .quizbutton:hover{
     background-color: var(--celadon)
+}
+
+input[type="radio"]{
+    display: none;
+}
+
+input[type="radio"]:checked + label{
+    background-color:var(--celadon) !important;
 }
 
 /* INDEX.HTML*/
@@ -192,3 +210,5 @@ nav{
 audio{
     display: none;
 }
+
+
