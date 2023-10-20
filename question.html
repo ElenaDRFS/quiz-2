@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="./assets/images/favicon.png" type="image/x-icon">
 </head>
 <body>
     <header>
@@ -22,33 +23,15 @@
     <main>
         <form action="" class="formulario" id="formulario">
             <!--la clase de los labels es igual para poder usarlo en el css pero también tiene un ID por si queremos darles un estilo personalizado a cada uno-->
-            <section id="container">
-                <h1>${title}</h1>
-                <label for="asn1" id="opt1" clas="answers">
-                <input type="radio" name="answer" id="ans1"><img class="iconLabel" src="./assets/images/icon09.png" alt="">${correct}</label>
-
-                <label for="ans2" id="opt2" clas="answers">
-                <input type="radio" name="answer" id="ans2"><img class="iconLabel" src="./assets/images/icon05.png" alt="">${incorrect[1]}</label>
 
 
-                <label for="ans3" id="opt3" clas="answers">
-                <input type="radio" name="answer" id="ans3"><img class="iconLabel" src="./assets/images/icon04.png" alt="">${incorrect[1]}</label>
-
-                <label for="ans4" id="opt4" clas="answers"> 
-                <input type="radio" name="answer" id="ans4"><img class="iconLabel" src="./assets/images/icon11.png" alt="">${incorrect[1]}</label>
-
-                </section>
-
-                <input type="button" value="Atrás" class="quizbutton" id="anterior">
-                <input type="button" value="Ver resultado" class="quizbutton" id="resultado">
-                <input type="button" value="Siguiente" class="quizbutton" id="siguiente">
             <!--el name tiene que ser igual para luego poder resgistrar las perguntas en el storage-->   
         </form>
     </main>
     <audio class="audio" src="./assets/audio/audio01.mp3" autoplay loop></audio>
     
 
-    <script src=""></script>
+    <script src="./script.js"></script>
 </body>
 </html>
 

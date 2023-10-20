@@ -27,18 +27,19 @@ async function pintarQuiz() {
     let form = document.getElementById("formulario");
     form.innerHTML = `<section id="container">
                     <h1>${title}</h1>
-                    <label for="asn1" id="opt1" clas="answers">${correct}</label>
-                    <input type="radio" name="answer" id="ans1">
+                    <input class = "radio" type="radio" name="answer" id="ans1">
+                    <label for="ans1" id="opt1" class="answers"><img class="iconLabel" src="./assets/images/icon09.png" alt="">${correct}</label>
+                    
+                    <input class = "radio" type="radio" name="answer" id="ans2">
+                    <label for="ans2" id="opt2" class="answers"><img class="iconLabel" src="./assets/images/icon05.png" alt="">${incorrect[0]}</label>
+                    
 
-                    <label for="ans2" id="opt2" clas="answers">${incorrect[0]}</label>
-                    <input type="radio" name="answer" id="ans2">
-
-
-                    <label for="ans3" id="opt3" clas="answers">${incorrect[1]}</label>
-                    <input type="radio" name="answer" id="ans3">
-
-                    <label for="ans4" id="opt4" clas="answers">${incorrect[2]}</label>
-                    <input type="radio" name="answer" id="ans4">
+                    <input class = "radio" type="radio" name="answer" id="ans3">
+                    <label for="ans3" id="opt3" class="answers"><img class="iconLabel" src="./assets/images/icon04.png" alt="">${incorrect[1]}</label>
+                    
+                    <input class = "radio" type="radio" name="answer" id="ans4">
+                    <label for="ans4" id="opt4" class="answers"><input type="radio" name="answer" id="ans4"><img class="iconLabel" src="./assets/images/icon11.png" alt="">${incorrect[2]}</label>
+                    
 
                     </section>
 
