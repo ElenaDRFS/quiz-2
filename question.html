@@ -3,25 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    
+    
+
+
     <title>Quiz</title>
-    <link rel="stylesheet" href="./styles.css">
-    
-    
+    <link rel="stylesheet" href="style.css">
 
 </head>
 <body>
-    <form action="" class="formulario" id="formulario">
-        <!--la clase de los labels es igual para poder usarlo en el css pero también tiene un ID por si queremos darles un estilo personalizado a cada uno-->
- 
-        <!--el name tiene que ser igual para luego poder resgistrar las perguntas en el storage-->
+    <header>
+            <nav>
+               <section>
+                <a href="index.html"><img id="iconHome" src="./assets/images/jukeboxQuizBlack.png" alt="Home Icon"></a>
+                 
+                </section>
+                <section class="muteButton">
+                    <button class="quizbutton" id="mute" type="button"> <img src="./assets/images/icon10.png" height ="30" />Mute</button>
 
-        
- 
-
-    </form>
+                </section>
+            </nav>
+    </header>
+    <main>
+        <form action="" class="formulario" id="formulario">
+            <!--la clase de los labels es igual para poder usarlo en el css pero también tiene un ID por si queremos darles un estilo personalizado a cada uno-->
+            
+            <!--el name tiene que ser igual para luego poder resgistrar las perguntas en el storage-->   
+        </form>
+    </main>
+    <audio class="audio" src="./assets/audio/audio01.mp3" autoplay loop></audio>
     
+
     
     <script src="./script.js"></script>
+
 </body>
 </html>
 
