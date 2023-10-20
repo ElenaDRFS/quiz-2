@@ -89,3 +89,5 @@ document
 
 //cómo validar? if input checked === ans1 {score++} else if input checked === ans 2,3,4 {score + 0}
 
+
+
