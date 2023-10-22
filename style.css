@@ -54,32 +54,9 @@ label{
     padding: 5px;
 }
 
-label {
-    animation-duration: 1s;
-    animation-name: slidein;
-  }
-  
-  @keyframes slidein {
-    from {
-      margin-left: 100%;
-      width: 300%;
-    }
-  
-    to {
-      margin-left: 0%;
-      width: 100%;
-    }
-  }
-
-
- 
 label:hover{
     background-color: var(--teaRose) !important;
 }
-
-
-
-
 
 p{
     font-family: Notesby;
@@ -92,7 +69,12 @@ h1{
     font-size: 2.4em;
     text-align: left;
     margin: auto;
+    margin-bottom: 20px;
     width: 90%;
+}
+
+.fontResult{
+    font-family: Rockabilly;
 }
 
 .quizbutton{
@@ -134,7 +116,7 @@ input[type="radio"]:checked + label{
 }
 
 #headerIndex{
-    width: 95%;
+    width: 90%;
     max-height: 120px;
     margin-left: auto;
     margin-right: auto;
@@ -152,7 +134,7 @@ input[type="radio"]:checked + label{
 }
 
 #scoresBox{
-    display:none;
+   
 }
 
 /* QUESTION.HTML*/
@@ -160,7 +142,7 @@ input[type="radio"]:checked + label{
 nav{
     display: flex;
     background-color:  rgba(207, 186, 240, .8);
-    width: 90%;
+    width: 80%;
     margin: auto;
     border-radius: 30px;
     justify-content: space-between;
@@ -177,6 +159,8 @@ nav{
 #container{
     display: flex;
     flex-direction: column;
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 #mute{
@@ -207,8 +191,177 @@ nav{
     background-color: var(--electricBlue); 
 }
 
-audio{
-    display: none;
+.audio{
+    display:none
 }
 
 
+/* RESULTS.HTML*/
+
+
+
+table{
+    width: auto;
+    border-color: black;
+    border-width: 1px;
+    border-style: ridge;
+    text-align: left;     
+    margin: auto;
+    border-collapse: collapse;
+    background-color: var(--teaRose)
+}
+
+
+td{
+    border-color: black;
+    border-width: 1px;
+    border-style: ridge;
+    width: 25%;
+    padding: 5px;
+    font-family: Notesby;
+    font-size: 1.4em; 
+}
+
+th{
+    background-color: var(--jordyBlue);
+    border-color: black;
+    border-width: 1px;
+    border-style: ridge;
+    padding: 5px;
+    font-family: Lemonmilk;
+    
+}
+
+#sectionResults {
+    animation-duration: 1s;
+    animation-name: slidein;
+  }
+  
+  @keyframes slidein {
+    from {
+      margin-left: 100%;
+      width: 300%;
+    }
+  
+    to {
+      margin-left: 0%;
+      width: 100%;
+    }
+}
+
+
+
+#hallOfFame{
+    text-align: left;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* MEDIAQUERIES */
+
+@media(max-width: 376px){ 
+    html{
+        font-size: 10px;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+
+    label {
+        animation-duration: 1s;
+        animation-name: slidein;
+      }
+      
+      @keyframes slidein {
+        from {
+          margin-left: 100%;
+          width: 300%;
+        }
+      
+        to {
+          margin-left: 0%;
+          width: 100%;
+        }
+    }
+    
+
+}
+
+@media only screen and (min-width: 768px) {
+    body {
+        margin-top: 60px;
+    }
+    main{
+        display: flex;
+        flex-direction: row;
+        align-items: stretch
+
+    }
+    .quizbutton{
+        font-size: 1em;
+    }
+
+    #bienvenida{
+        padding: 15px;
+        margin-right: 5px;
+    }
+
+    #scoresBox{
+        background-color: var(--aquamarine);
+        padding: 20px;
+        border-radius: 15px;   
+    }
+
+    #sectionResults{
+        width: 70%;
+        margin-right: 20px;
+
+    }
+
+    #formulario{
+        max-height: 500px;
+    }
+
+    #container {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+    }
+
+
+
+    h1{
+
+        text-align: center;
+        margin-bottom: 35px;
+
+
+    }
+
+    .answers{
+        width: 40%;
+        min-height: 120px;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        font-size: 2.1em;
+        
+    }
+
+    .iconLabel{
+        width: 80px;
+    }
+  
+
+}
+
+
+
+@media only screen and (min-width: 1366px) {
+
+   
+
+}
