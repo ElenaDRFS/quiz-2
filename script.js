@@ -1,28 +1,21 @@
+let preguntas = [];
+let page = 0;
+
 async function questionsGenerator() {
   let response = await fetch(
     "https://opentdb.com/api.php?amount=10&category=12&difficulty=easy&type=multiple"
   );
   let data = await response.json();
-  let results = data.results;
-  console.log(results)
-  return results;
+  preguntas = data.results;
+  console.log(preguntas)
   
- 
-}
+  }
 
-async function startQuiz(){
-  let preguntas = await questionsGenerator();
-  console.log(preguntas);
-  return preguntas;
-}
 
-async function pintarQuiz() {
-    let start = await questionsGenerator();
-    console.log(start);
-    start.forEach((element) => {
-    let title = element.question;
-    let correct = element.correct_answer;
-    let incorrect = element.incorrect_answers;
+function pintarQuiz() {    
+    let title = preguntas[page].question;
+    let correct = preguntas[page].correct_answer;
+    let incorrect = preguntas[page].incorrect_answers;
 
 
     //template string para generar formulario, dentro de la función porque cuando haga el fetch es cuando se pintan
@@ -43,19 +36,17 @@ async function pintarQuiz() {
                     <input class = "radio" type="radio" name="answer" id="ans4">
                     <label for="ans4" id="opt4" class="answers"><input type="radio" name="answer" id="ans4"><img class="iconLabel" src="./assets/images/icon11.png" alt="">${incorrect[2]}</label>
                     
+                    <input type="submit" value="Checked results!" class="quizbutton" id="resultado"></input>
+                    </section>`
 
-                    </section>
-
-                    <input type="button" value="Atrás" class="quizbutton" id="anterior">
-                     
-                    <input type="submit" value="Siguiente" class="quizbutton" id="siguiente">`; 
-  });
+  
 }
 
 
 // funcionalidad botones 
 
 // botón log in
+
 if(document.title === 'Jukebox Quiz - Home'){
   document
     .getElementById("userGame")
@@ -82,27 +73,88 @@ if(document.title === 'Jukebox Quiz - Home'){
 
 } 
 if(document.title === 'Quiz'){
-  startQuiz();
+   questionsGenerator().then(()=>{
+    pintarQuiz();
+   })
+  
  
 }
-pintarQuiz();
+
+// FUNCIONALIDAD BOTON MUTE
+let audio = document.getElementsByClassName("audio");
+let mute = document.getElementsByClassName("muteButton");
+mute[0].addEventListener("click", function() {
+    if (audio[0].muted == true) {
+        audio[0].muted = false;
+    } else {
+        audio[0].muted = true;
+    };}); 
+
+//boton next
+
+document.getElementById('next').addEventListener('click',function(){
+  page++
+  pintarQuiz();
+})
+
+// botón atrás
+document.getElementById('back').addEventListener('click',function(){
+  page--
+  pintarQuiz();
+})
 
 
-// //botón next
 
-// async function moveFoward(){
-//     let nextQuestion = await pintarQuiz(); 
-//     return nextQuestion;
-
+//botón resultados
+// if(page === 9){
+  //borro botón siguiente, atrás
+  //pinta botñon resultados 
+  //al clicar el botón se hace submit, salta la alerta con las acertadas y las soluciones si queremos
+  //nos vamos a results 
+  //aprezca la tabla de resultados y gráfica de usuario
 // }
 
-// document
-//     .getElementById("formulario")
-//     .addEventListener("submit", function (event) {
-//         moveFoward(); 
-        
-      
-//     });
+//TEMPLATE TABLA
+// Obtenemos las puntuaciones de los 5 mejores jugadores sea de local store o de Firenoseque
+//De momento estas para llenar la tabla y maquetar.
+// let puntuaciones = [
+//   { name: "Juan", date: "2023-10-20", result: 100 },
+//   { name: "Pedro", date: "2023-10-19", result: 90 },
+//   { name: "María", date: "2023-10-18", result: 80 },
+//   { name: "José", date: "2023-10-17", result: 70 },
+//   { name: "Ana", sate: "2023-10-16", result: 60 },
+// ];
+
+// // Creamos la plantilla template string para la tabla
+// const bestPlayers = `
+//   <table>
+//     <thead>
+//       <tr>
+//         <th>Player</th>
+//         <th>Date</th>
+//         <th>Result</th>
+//       </tr>
+//     </thead>
+//     <tbody>
+//       ${puntuaciones.map((puntuacion) => `
+//         <tr>
+//           <td>${puntuacion.name}</td>
+//           <td>${puntuacion.date}</td>
+//           <td>${puntuacion.result}</td>
+//         </tr>
+//       `).join("")}
+//     </tbody>
+//   </table>
+// `;
+
+// // Agregamos la tabla al DOM
+// let sectionResults = document.getElementById("sectionResults")
+// let contTable = document.getElementById("contTable")
+// contTable.innerHTML = bestPlayers;
+// sectionResults.appendChild(contTable);
+
+
+
 
 
 // /* <input type="button" value="Checked results!" class="quizbutton" id="resultado"></input> */
