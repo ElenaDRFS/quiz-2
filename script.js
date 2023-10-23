@@ -1,7 +1,7 @@
 let preguntas = [];
 let page = 0;
 let score = 0;
-// let fecha = new Date;
+let fecha = new Date;
 
 
 function submitForm(){
@@ -11,22 +11,30 @@ function submitForm(){
       score++
       console.log(score);
     } 
-
-    let almacenado = JSON.parse(localStorage.getItem('players'))
-    console.log(almacenado)
-    // let players = {
-    //   score: score,
-    //   date : fecha.toLocaleDateString()
-    // }
-
-    // let total = Object.assign(players)
-
+    recopilarDatos();
+    
     window.location.href = './results.html';
    
   })
   
   
 }
+
+function recopilarDatos(){
+  let almacenado = JSON.parse(localStorage.getItem('players'));
+  let ultimo = almacenado[almacenado.length-1];
+  let fechaScore = {
+    fecha : fecha.toLocaleDateString(),
+    score : score
+  }
+  const character = Object.assign(ultimo, fechaScore);
+
+almacenado.push(character);
+localStorage.setItem("players", JSON.stringify(almacenado));
+
+ 
+}
+
 
 
 
@@ -72,6 +80,8 @@ function pintarQuiz() {
 
   
 }
+
+
 
 
 // funcionalidad botones 
