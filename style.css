@@ -27,6 +27,14 @@
     src: url(./assets/fonts/Rockabilly.ttf);
 }
 
+/* clase global para mostrar los elementos  */
+.show{  
+    display: block;
+}
+
+.notshow{
+    display: none;
+}
 
 body{
     background-image: url("./assets/images/starsBlack.jpg");
