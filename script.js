@@ -1,3 +1,130 @@
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut} from "https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js";
+import { getFirestore, collection, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-storage.js";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+
+//CONECTAR FIREBASE
+const firebaseConfig = {
+  apiKey: "AIzaSyBpkER-BUrmgpsetSxLVGzIrL5TIc7kg5w",
+  authDomain: "prueba-autenticacion-y-mas.firebaseapp.com",
+  projectId: "prueba-autenticacion-y-mas",
+  storageBucket: "prueba-autenticacion-y-mas.appspot.com",
+  messagingSenderId: "666047643817",
+  appId: "1:666047643817:web:8e83a258e9c2867b3329b8"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+//Initialize Auth
+const auth = getAuth();
+const user = auth.currentUser;
+//Initialize DDBB
+const db = getFirestore(app);
+//Initialize cloudstore
+const storage = getStorage();
+
+//Selectores
+const signUpForm = document.getElementById('signup-form');
+const loginForm = document.getElementById('login-form');
+const logout = document.getElementById('logout');
+
+//SignUp function
+signUpForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const signUpEmail = document.getElementById('signup-email').value;
+  const signUpPassword = document.getElementById('signup-pass').value;
+  const signUpUser = document.getElementById('signup-user').value;
+  const usersRef = collection(db, "users");
+  
+  try {
+    //Create auth user
+    await createUserWithEmailAndPassword(auth, signUpEmail, signUpPassword)
+    .then((userCredential) => {
+      console.log('User registered')
+      const user = userCredential.user;
+      signUpForm.reset();
+    })
+    //Create document in DB
+    await setDoc(doc(usersRef, signUpEmail), {
+      username: signUpUser,
+      email: signUpEmail,
+    })
+  } catch (error) {
+    console.log('Error: ', error)
+  }
+      
+})
+
+
+//Login function
+loginForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const loginEmail = document.getElementById('login-email').value;
+  const loginPassword = document.getElementById('login-pass').value;
+  let userData = document.getElementById('user-data');
+  console.log(userData);
+  //Call the collection in the DB
+  const docRef = doc(db, "users", loginEmail);
+  //Search a document that matches with our ref
+  const docSnap = await getDoc(docRef);
+
+  signInWithEmailAndPassword(auth, loginEmail, loginPassword)
+    .then((userCredential) => {
+      console.log(userCredential);
+      console.log('User authenticated')
+      loginForm.reset();
+    })
+    .then(() => {
+
+      if (docSnap.exists()) {
+        userData.style.cssText = 'background-color: #73AB84;width: 50%;margin: 2rem auto;padding: 1rem;border-radius: 5px;display: flex;flex-direction: column;align-items: center';
+        userData.innerHTML = `<h3>User Data</h3>
+                              <p>Username: ${docSnap.data().username}</p>
+                              <p>Email: ${docSnap.data().email}</p>
+                             `
+      } else {
+        console.log("No such document!");
+    }})
+    .catch((error) => {
+      document.getElementById('msgerr').innerHTML='Invalid user or password';
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log('Código del error: ' + errorCode);
+      console.log('Mensaje del error: ' + errorMessage);
+    });
+})
+
+//Logout function
+logout.addEventListener('click', () => {
+  let userData = document.getElementById('user-data');
+  signOut(auth).then(() => {
+    console.log('Logout user')
+    userData.style.cssText = '';
+    userData.innerHTML = ``;
+  }).catch((error) => {
+    console.log('Error: ', error)
+  });
+})
+
+//Observe the user's state
+auth.onAuthStateChanged(user => {
+  if(user){
+    console.log('Logged user');
+  }else{
+    console.log('No logged user');
+  }
+})
+
+
+
+
+
+
+//VARIABLES
 let preguntas = [];
 let correctas = [];
 let page = 0;
@@ -107,36 +234,36 @@ function pintarQuiz() {
 // funcionalidad botones 
 
 // botón log in
-if(document.title === 'Jukebox Quiz - Home'){
-  document
-    .getElementById("userGame")
-    .addEventListener("submit", function (event) {
-      event.preventDefault();
-      let recoveredData = JSON.parse(localStorage.getItem("players"));
-      let nombre = event.target.nombre.value;
-      let player = [{ name: nombre }];
+// if(document.title === 'Jukebox Quiz - Home'){
+//   document
+//     .getElementById("userGame")
+//     .addEventListener("submit", function (event) {
+//       event.preventDefault();
+//       let recoveredData = JSON.parse(localStorage.getItem("players"));
+//       let nombre = event.target.nombre.value;
+//       let player = [{ name: nombre }];
       
-      if (recoveredData === null) {
-        localStorage.setItem("players", JSON.stringify(player));
-      } else {
-          let newPlayer = { name: nombre };
+//       if (recoveredData === null) {
+//         localStorage.setItem("players", JSON.stringify(player));
+//       } else {
+//           let newPlayer = { name: nombre };
         
-        recoveredData.push(newPlayer);
-        localStorage.setItem("players", JSON.stringify(recoveredData));
-      }
+//         recoveredData.push(newPlayer);
+//         localStorage.setItem("players", JSON.stringify(recoveredData));
+//       }
 
-      window.location.href = './question.html';
+//       window.location.href = './question.html';
       
-    });
+//     });
 
-} 
-if(document.title === 'Quiz'){
-   questionsGenerator().then(()=>{
-    pintarQuiz();
-   })
+// } 
+// if(document.title === 'Quiz'){
+//    questionsGenerator().then(()=>{
+//     pintarQuiz();
+//    })
   
  
-}
+// }
 
 // FUNCIONALIDAD BOTON MUTE
 if(document.title === 'Quiz' || document.title === 'Jukebox Quiz - Results' ){

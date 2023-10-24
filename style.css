@@ -107,7 +107,7 @@ input[type="radio"]:checked + label{
 
 /* INDEX.HTML*/
 
-#userGame{
+.userGame{
     display: flex;
     flex-direction: column;
     align-content: center;
