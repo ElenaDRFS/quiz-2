@@ -27,10 +27,24 @@ const db = getFirestore(app);
 //Initialize cloudstore
 const storage = getStorage();
 
+
+//VARIABLES
+let preguntas = [];
+let correctas = [];
+let page = 0;
+let score = 0;
+let fecha = new Date;
+fecha = fecha.toLocaleString();
+
+if (document.title == "Jukebox Quiz - Home"){
 //Selectores
 const signUpForm = document.getElementById('signup-form');
 const loginForm = document.getElementById('login-form');
 const logout = document.getElementById('logout');
+
+console.log(signUpForm, loginForm);
+
+
 
 //SignUp function
 signUpForm.addEventListener('submit', async (e) => {
@@ -39,7 +53,9 @@ signUpForm.addEventListener('submit', async (e) => {
   const signUpPassword = document.getElementById('signup-pass').value;
   const signUpUser = document.getElementById('signup-user').value;
   const usersRef = collection(db, "users");
-  
+  let playDate = fecha;
+  let points = 0;
+
   try {
     //Create auth user
     await createUserWithEmailAndPassword(auth, signUpEmail, signUpPassword)
@@ -49,9 +65,11 @@ signUpForm.addEventListener('submit', async (e) => {
       signUpForm.reset();
     })
     //Create document in DB
-    await setDoc(doc(usersRef, signUpEmail), {
+    await setDoc(doc(usersRef, signUpEmail, playDate, points), {
       username: signUpUser,
       email: signUpEmail,
+      date : [],
+      score : []
     })
   } catch (error) {
     console.log('Error: ', error)
@@ -82,9 +100,11 @@ loginForm.addEventListener('submit', async (e) => {
 
       if (docSnap.exists()) {
         userData.style.cssText = 'background-color: #73AB84;width: 50%;margin: 2rem auto;padding: 1rem;border-radius: 5px;display: flex;flex-direction: column;align-items: center';
-        userData.innerHTML = `<h3>User Data</h3>
+        userData.innerHTML = `<h3>Welcome!</h3>
                               <p>Username: ${docSnap.data().username}</p>
                               <p>Email: ${docSnap.data().email}</p>
+                              <p>Now you are ready to play!</p>
+                              <button id="startQuiz"class="quizbutton" type="click"><a href="./question.html">Play!</a></button>
                              `
       } else {
         console.log("No such document!");
@@ -119,19 +139,17 @@ auth.onAuthStateChanged(user => {
   }
 })
 
+}
 
 
 
 
 
-//VARIABLES
-let preguntas = [];
-let correctas = [];
-let page = 0;
-let score = 0;
-let fecha = new Date;
 
 
+
+
+//VALIDA PREGUNTAS Y MANDA A FIRESTORE
 function submitForm(){
   document.getElementById("check").addEventListener('click',function(event){
     event.preventDefault();
@@ -140,29 +158,50 @@ function submitForm(){
       score++
       console.log(score);
     } 
-    recopilarDatos();
-    
+     
     window.location.href = './results.html';
+
+    var baseDatos = db.collection("users").doc("tecnicos@gmail.com");
+
+    return baseDatos.update({
+      fecha: true,
+      score: true
+    })
+      .then(() => {
+        console.log("Document successfully updated!");
+      })
+      .catch((error) => {
+        // The document probably doesn't exist.
+        console.error("Error updating document: ", error);
+      });
    
   })
+
+
   
   
 }
 
-function recopilarDatos(){
-  let almacenado = JSON.parse(localStorage.getItem('players'));
-  let ultimo = almacenado[almacenado.length-1];
-  let fechaScore = {
-    fecha : fecha.toLocaleDateString(),
-    score : score
-  }
-  const character = Object.assign(ultimo, fechaScore);
+// function recopilarDatos(){
+//   let almacenado = JSON.parse(localStorage.getItem('players'));
+//   let ultimo = almacenado[almacenado.length-1];
+//   let fechaScore = {
+//     fecha : fecha.toLocaleDateString(),
+//     score : score
+//   }
+//   const character = Object.assign(ultimo, fechaScore);
 
-almacenado[almacenado.length-1] = character;
-localStorage.setItem("players", JSON.stringify(almacenado));
+// almacenado[almacenado.length-1] = character;
+// localStorage.setItem("players", JSON.stringify(almacenado));
 
  
-}
+// }
+
+// function updateFirebase () {
+
+
+
+// }
 
 
 
@@ -257,13 +296,26 @@ function pintarQuiz() {
 //     });
 
 // } 
-// if(document.title === 'Quiz'){
-//    questionsGenerator().then(()=>{
-//     pintarQuiz();
-//    })
+ if(document.title === 'Quiz'){
+    questionsGenerator().then(()=>{
+    pintarQuiz();
+    })
   
- 
-// }
+  }
+
+
+//botón inicio juego
+//if(document.title === 'Jukebox Quiz - Home'){
+    // document
+    //   .getElementById("startQuiz")
+    //   .addEventListener("click", function () {
+    //     window.location.href = './question.html'
+    //   });
+
+//    }
+        
+
+
 
 // FUNCIONALIDAD BOTON MUTE
 if(document.title === 'Quiz' || document.title === 'Jukebox Quiz - Results' ){

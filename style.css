@@ -134,15 +134,19 @@ input[type="radio"]:checked + label{
 }
 
 #imgHeader{
-    
     max-height: 80px;
     margin-top: 30px;
     margin-bottom: 30px;
 
 }
 
+
+#signup-form{
+ 
+}
+
 #scoresBox{
-   
+   display: none;
 }
 
 /* QUESTION.HTML*/
