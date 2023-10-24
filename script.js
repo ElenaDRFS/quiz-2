@@ -1,13 +1,15 @@
 let preguntas = [];
+let correctas = [];
 let page = 0;
 let score = 0;
 let fecha = new Date;
 
 
 function submitForm(){
-  document.getElementById('formulario').addEventListener('submit',function(event){
+  document.getElementById("check").addEventListener('click',function(event){
     event.preventDefault();
-    if(document.querySelector('input[value="correct"]:checked')) {
+    let respuesta = document.querySelector(`input[name=answer]:checked`).value;
+    if(respuesta == "r3"){
       score++
       console.log(score);
     } 
@@ -29,7 +31,7 @@ function recopilarDatos(){
   }
   const character = Object.assign(ultimo, fechaScore);
 
-almacenado.push(character);
+almacenado[almacenado.length-1] = character;
 localStorage.setItem("players", JSON.stringify(almacenado));
 
  
@@ -44,43 +46,61 @@ async function questionsGenerator() {
   );
   let data = await response.json();
   preguntas = data.results;
+  preguntas.forEach(element => {
+    correctas.push(element.correct_answer);
+    
+  });
+
   console.log(preguntas)
+  console.log(correctas)
   
 }
 
 
 function pintarQuiz() {    
-    let title = preguntas[page].question;
-    let correct = preguntas[page].correct_answer;
-    let incorrect = preguntas[page].incorrect_answers;
+  let title = preguntas[page].question;
+  let correct = preguntas[page].correct_answer;
+  let incorrect = preguntas[page].incorrect_answers;
+  incorrect.push(correct);
 
 
-    //template string para generar formulario, dentro de la función porque cuando haga el fetch es cuando se pintan
+  function randomizar(indicesRespuestas) {
+    indicesRespuestas.sort(() => Math.random() - 0.5);
+  }
+  
+  let i = [0, 1, 2, 3];
+  randomizar(i);
 
-    let form = document.getElementById("formulario");
-    // let prueba = document.getElementById('espacio');
-    form.innerHTML = `<section id="container">
-                    <h1>${title}</h1>
-                    <input class = "radio" type="radio" name='answer' id="ans1" value=correct>
-                    <label for="ans1" id="opt1" class="answers"><img class="iconLabel" src="./assets/images/icon09.png" alt="">${correct}</label>
-                    
-                    <input class = "radio" type="radio" name='answer' id="ans2" value = incorrect>
-                    <label for="ans2" id="opt2" class="answers"><img class="iconLabel" src="./assets/images/icon05.png" alt="">${incorrect[0]}</label>
-                    
+  //template string para generar formulario, dentro de la función porque cuando haga el fetch es cuando se pintan
 
-                    <input class = "radio" type="radio" name= 'answer' id="ans3" value = incorrect>
-                    <label for="ans3" id="opt3" class="answers"><img class="iconLabel" src="./assets/images/icon04.png" alt="">${incorrect[1]}</label>
-                    
-                    <input class = "radio" type="radio" name= 'answer' " id="ans4" value = incorrect>
-                    <label for="ans4" id="opt4" class="answers"><input type="radio" name="answer" id="ans4"><img class="iconLabel" src="./assets/images/icon11.png" alt="">${incorrect[2]}</label>
+  let form = document.getElementById("formulario");
+  // let prueba = document.getElementById('espacio');
 
-                    <input type="submit" value="Checked results!" class="quizbutton notshow" id="check"></input> 
-                    
-                    </section>`
+
+
+  
+
+  form.innerHTML = `<section id="container">
+                  <h1>${title}</h1>
+                  <input class = "radio" type="radio" name='answer' id="ans1" value=r${i[0]}>
+                  <label for="ans1" id="opt1" class="answers"><img class="iconLabel" src="./assets/images/icon09.png" alt="">${incorrect[(i[0])]}</label>
+                  
+                  <input class = "radio" type="radio" name='answer' id="ans2" value = r${i[1]}>
+                  <label for="ans2" id="opt2" class="answers"><img class="iconLabel" src="./assets/images/icon05.png" alt="">${incorrect[(i[1])]}</label>
+                  
+
+                  <input class = "radio" type="radio" name= 'answer' id="ans3" value = r${i[2]}>
+                  <label for="ans3" id="opt3" class="answers"><img class="iconLabel" src="./assets/images/icon04.png" alt="">${incorrect[(i[2])]}</label>
+                  
+                  <input class = "radio" type="radio" name= 'answer' " id="ans4" value = r${i[3]}>
+                  <label for="ans4" id="opt4" class="answers"><input type="radio" name="answer" id="ans4"><img class="iconLabel" src="./assets/images/icon11.png" alt="">${incorrect[(i[3])]}</label>
+
+                  <input type="submit" value="Checked results!" class="quizbutton notshow" id="check"></input> 
+                  
+                  </section>`
 
   
 }
-
 
 
 
@@ -133,8 +153,14 @@ mute[0].addEventListener("click", function() {
 // //botón back 
 if(document.title === 'Quiz'){ 
   document.getElementById('back').addEventListener('click',function(){
-    page--
+   if (page > 0){
+    page--;
+   }
    
+   if (score > 0) {
+    score --;
+   };
+
     pintarQuiz();
   }
 )};
@@ -144,10 +170,13 @@ if(document.title === 'Quiz'){
 
 if(document.title === 'Quiz'){ 
 document.getElementById('next').addEventListener('click',function(){
-  if(document.querySelector('input[value="correct"]:checked')) {
+  let respuesta = document.querySelector(`input[name=answer]:checked`).value
+  console.log(respuesta);
+  if(respuesta == "r3"){
     score++
-    console.log(score)
-  }   
+    console.log(score);
+  } 
+       
   page++
   console.log(page)
   
@@ -184,7 +213,7 @@ if(document.title === 'Jukebox Quiz - Results'){
   
 
 
-
+/*
 
 
 // TEMPLATE TABLA
@@ -224,4 +253,4 @@ if(document.title === 'Jukebox Quiz - Results'){
 // let sectionResults = document.getElementById("sectionResults")
 // let contTable = document.getElementById("contTable")
 // contTable.innerHTML = bestPlayers;
-// sectionResults.appendChild(contTable);
+// sectionResults.appendChild(contTable);*/
