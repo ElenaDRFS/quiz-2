@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link rel="shortcut icon" href="./assets/images/favicon.png" type="image/x-icon">
 
 </head>
+
 <body>
     <header id="headerIndex">
         <img id="imgHeader" src="./assets/images/jukeboxQuiz.png" alt="jukeboxQuiz Logo">
@@ -20,47 +22,55 @@
                 <img id="star" src="./assets/images/icon02.png" alt="Star Icon">
             </article>
             <article>
-               <!-- FORMULARIO LOCAL STORAGE
+                <!-- FORMULARIO LOCAL STORAGE
                 <form class= "userGame" action="">
                     <label for="nombre">Type in your player name:</label>
                     <input type="text" name="nombre" id="nombre" required>                
                     <button class="quizbutton" type="submit">Sign Up</button>
                 </form>-->
-                <form class= "userGame"  id ='login-form' action="">
+                <form class="userGame" id='login-form' action="">
                     <label for="email">Type your mail and pasword</label>
-                    <input type="email" name='login-email' id='login-email' placeholder="musicfreak@jukebox.com" required> 
-                    <input type="password" name='login-pass' id='login-pass' placeholder="pasword" required>                
+                    <input type="email" name='login-email' id='login-email' placeholder="musicfreak@jukebox.com"
+                        required>
+                    <input type="password" name='login-pass' id='login-pass' placeholder="pass min 6 characteres"
+                        required>
                     <button class="quizbutton" type="submit" id="login">Log In</button>
-                    <button class="quizbutton" id='logout' >Log out</button>
+                    <button class="quizbutton" id='logout'>Log out</button>
 
                 </form>
-                <button class="quizbutton">resgistrar</button>
-                <!-- FORMULARIO DE REGISTRO NUEVOS USUARIOS -->
-                   <form class= "userGame" id='signup-form' action="">
+                <button class="quizbutton" id="registrar">resgistrar</button>
+
+                <form class="userGame" id='signup-form' action="">
                     <label for="text">Wellcome. Type your UserName, email and pasword.</label>
                     <input type="text" name='signup-user' id='signup-user' placeholder="UserName" required>
-                    <input type="email" name= 'signup-email' id='signup-email' placeholder="musicfreak@jukebox.com" required> 
-                    <input type="password" name='signup-pass' id='signup-pass' placeholder="pasword" required>                
-                    <button class="quizbutton" id="registrar" type="submit">registrar</button>
+                    <input type="email" name='signup-email' id='signup-email' placeholder="musicfreak@jukebox.com"
+                        required>
+                    <input type="password" name='signup-pass' id='signup-pass' placeholder="pass min 6 characteres"
+                        required>
+                    <button class="quizbutton" id="send" type="submit">send</button>
                 </form>
 
                 <p id="msgerr"></p>
-                <div id="user-data"></div>
 
-            </article>  
+                <div class="userGame" id="user-data"></div>
+
+            </article>
 
 
         </section>
 
-          <!-- <section id = "scoresBox">
-            <p id="scores" class="fontResult">Your scores</p>
-            <img src="./assets/images/graficaFakeMaquetar.jpg" alt="">
-        </section> -->
-    
+        <section id="scoresBox">
+            <p id="scores" class="fontResult">Your last scores</p>
+            <div>
+                <canvas id="myChart"></canvas>
+            </div> 
+        </section>
+
 
 
     </main>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="./script.js" type="module"></script>
 </body>
+
 </html>

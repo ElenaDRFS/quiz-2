@@ -81,6 +81,11 @@ h1{
     width: 90%;
 }
 
+h3{
+    font-family:Notesby;
+    font-size: 2em;
+}
+
 .fontResult{
     font-family: Rockabilly;
 }
@@ -142,11 +147,15 @@ input[type="radio"]:checked + label{
 
 
 #signup-form{
- 
+    display: none;
 }
 
 #scoresBox{
    display: none;
+}
+
+#user-data{
+    display: none;
 }
 
 /* QUESTION.HTML*/
@@ -261,7 +270,9 @@ th{
     }
 }
 
-
+#scoresBox2{
+    display: block;
+ }
 
 #hallOfFame{
     text-align: left;
@@ -322,6 +333,12 @@ th{
     }
 
     #scoresBox{
+        background-color: var(--aquamarine);
+        padding: 20px;
+        border-radius: 15px;   
+    }
+
+    #scoresBox2{
         background-color: var(--aquamarine);
         padding: 20px;
         border-radius: 15px;   
