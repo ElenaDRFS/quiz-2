@@ -3,7 +3,7 @@
 ## Contenido ##
 ![music](https://github.com/ElenaDRFS/quiz-2/assets/145337549/3d805dba-cf91-47e0-8db7-700ecc1be4c3)
 
-En este repositorio encontrarás un desafío sin igual. Podrás poner a prueba tus conocimientos musicales a través de un quiz de 10  preguntas. La música es el motor de la vida, veamos cuanto sabes sobre ello. 
+En este repositorio encontrarás un desafío sin igual. Podrás poner a prueba tus conocimientos musicales a través de un quiz de 10  preguntas. La música es el motor de la vida, veamos cuanto sabes sobre ello. Let's start!!!! https://elenadrfs.github.io/quiz-2/ 
 
 ## ¿Cómo se juega? ##
 Lo primero que tienes que saber es que solo podrás jugar si estás registrado. Así que para ello, clica en el botón "registrar" y crea tu usuario. Una vez estés inscrito, introduce tus datos en el "login" y te saldrá el botón de inicio del quiz además de tus datos de usuario para que no los olvides. 
