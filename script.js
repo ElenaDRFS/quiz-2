@@ -1,10 +1,10 @@
-// Import the functions you need from the SDKs you need
+//Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js";
 import { getFirestore, collection, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-storage.js";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+//TODO: Add SDKs for Firebase products that you want to use
+//https://firebase.google.com/docs/web/setup#available-libraries
 
 
 //CONECTAR FIREBASE
@@ -17,7 +17,7 @@ const firebaseConfig = {
   appId: "1:666047643817:web:8e83a258e9c2867b3329b8"
 };
 
-// Initialize Firebase
+//Initialize Firebase
 const app = initializeApp(firebaseConfig);
 //Initialize Auth
 const auth = getAuth();
@@ -34,10 +34,13 @@ let correctas = [];
 let page = 0;
 let score = 0;
 let fecha = new Date;
-fecha = fecha.toLocaleString();
+fecha = fecha.toDateString();
 
-//if (document.title == "Jukebox Quiz - Home"){
-//Selectores
+
+
+//// ______________ REGISTO LOGIN Y AUTENTICATION _____________________
+
+
 const signUpForm = document.getElementById('signup-form');
 const loginForm = document.getElementById('login-form');
 const logout = document.getElementById('logout');
@@ -54,11 +57,11 @@ if (document.title == "Jukebox Quiz - Home") {
     let signUpEmail = document.getElementById('signup-email').value;
 
     //almacenamos ese email en LOCALSTORAGE
-    let guardar = JSON.parse(localStorage.getItem("emails"));
+    let guardar = JSON.parse(localStorage.getItem("mails"));
     let mail = [{ email: signUpEmail }];
 
     if (guardar === null) {
-      localStorage.setItem("emails", JSON.stringify(mail));
+      localStorage.setItem("mails", JSON.stringify(mail));
     } else {
       let newEmail = { email: signUpEmail };
 
@@ -71,6 +74,7 @@ if (document.title == "Jukebox Quiz - Home") {
     const signUpUser = document.getElementById('signup-user').value;
     const usersRef = collection(db, "users");
 
+
     try {
       //Create auth user
       await createUserWithEmailAndPassword(auth, signUpEmail, signUpPassword)
@@ -78,14 +82,22 @@ if (document.title == "Jukebox Quiz - Home") {
           console.log('User registered')
           const user = userCredential.user;
           signUpForm.reset();
+          let userData = document.getElementById('user-data');
+          userData.style.cssText = 'display:block; background-color: #73AB84;width: 50%;margin: 2rem auto;padding: 1rem;border-radius: 5px;display: flex;flex-direction: column;align-items: center';
+          userData.innerHTML = `<h3>Welcome!</h3>
+                              <p>Username: ${signUpUser}</p>
+                              <p>Now you are ready to play!</p>
+                              <button id="startQuiz"class="quizbutton" type="click"><a href="./question.html">Play!</a></button>`
+          document.getElementById("signup-form").style.display = "none";
+          document.getElementById("user-data").style.cssText = 'display: block; background-color: #ffcfd2; width: 75%; margin: auto; padding: 5px;';
         })
       //Create document in DB
       await setDoc(doc(usersRef, signUpEmail), {
         username: signUpUser,
         email: signUpEmail,
-        date:[],
-        scores: []
       })
+
+
     } catch (error) {
       console.log('Error: ', error)
     }
@@ -101,11 +113,11 @@ if (document.title == "Jukebox Quiz - Home") {
 
 
     //almacenamos ese mail en LOCAL STORAGE
-    let guardar = JSON.parse(localStorage.getItem("emails"));
+    let guardar = JSON.parse(localStorage.getItem("mails"));
     let mail = [{ email: loginEmail }];
 
     if (guardar === null) {
-      localStorage.setItem("emails", JSON.stringify(mail));
+      localStorage.setItem("mails", JSON.stringify(mail));
     } else {
       let newEmail = { email: loginEmail };
 
@@ -132,13 +144,65 @@ if (document.title == "Jukebox Quiz - Home") {
       .then(() => {
 
         if (docSnap.exists()) {
-          userData.style.cssText = 'background-color: #73AB84;width: 50%;margin: 2rem auto;padding: 1rem;border-radius: 5px;display: flex;flex-direction: column;align-items: center';
+          userData.style.cssText = 'display: block; background-color: #ffcfd2; width: 75%; margin: auto; padding: 5px;';
           userData.innerHTML = `<h3>Welcome!</h3>
                               <p>Username: ${docSnap.data().username}</p>
                               <p>Email: ${docSnap.data().email}</p>
                               <p>Now you are ready to play!</p>
                               <button id="startQuiz"class="quizbutton" type="click"><a href="./question.html">Play!</a></button>
                              `
+          userData.style.display = "block";
+          document.getElementById("registrar").style.display = "none";
+          document.getElementById("login-form").style.display = "none";
+          document.getElementById("scoresBox").style.display = "block";
+
+          //GRAFICA USUARIO LOGUEADO
+
+
+          let localData = JSON.parse(localStorage.getItem('mails'));
+          console.log(localData);
+          let fechasGrafica = [];
+          let scoreGrafica = [];
+          for (let i = 0; i < localData.length; i++) {
+            if (localData[i]["email"] == loginEmail) {
+              fechasGrafica.push(localData[i]["fecha"]);
+              scoreGrafica.push(localData[i]["score"]);
+            };
+
+          }
+
+          for (let j = 0; j < scoreGrafica; j++) {
+            scoreGrafica[j].split(",", 4);
+          };
+
+
+
+          console.log(fechasGrafica, scoreGrafica);
+
+
+
+          const ctx = document.getElementById('myChart');
+          new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: [`${fechasGrafica[0]}`, `${fechasGrafica[1]}`, `${fechasGrafica[2]}`, `${fechasGrafica[3]}`, `${fechasGrafica[4]}`],
+              datasets: [{
+                label: 'Correct Answers',
+                data: [`${scoreGrafica[0]}`, `${scoreGrafica[1]}`, `${scoreGrafica[2]}`, `${scoreGrafica[3]}`, `${scoreGrafica[4]}`],
+                borderWidth: 1
+              }]
+            },
+            options: {
+              responsive: true,
+              aspectRatio: 1 | 1,
+              scales: {
+                y: {
+                  beginAtZero: true
+                }
+              }
+            }
+          });
+
         } else {
           console.log("No such document!");
         }
@@ -173,11 +237,12 @@ if (document.title == "Jukebox Quiz - Home") {
     }
   })
 
+
 }
 
 
 
-
+//// ______________ FUNCIONES _____________________
 
 
 
@@ -193,17 +258,31 @@ function submitForm() {
       console.log(score);
     }
 
-    let playersMails = JSON.parse(localStorage.getItem("emails"));
-    let ultimo = playersMails[playersMails.length - 1].email;
+    let playersMails = JSON.parse(localStorage.getItem("mails"));
+    let ultimo = playersMails[playersMails.length - 1];
+    let fechaScore = {
+      fecha: fecha,
+      score: score
+    }
+    const character = Object.assign(ultimo, fechaScore);
 
-    const docRef = doc(db, "users", ultimo);
+    playersMails[playersMails.length - 1] = character;
+    localStorage.setItem("mails", JSON.stringify(playersMails));
+
+
+
+    //info a FIREBASE
+    const id = Math.random().toString(36).substring(7);
+
+    const docRef = doc(db, "partidas", id);
 
     const data = {
+      email: ultimo,
       date: fecha,
       scores: score
     };
 
-    updateDoc(docRef, data)
+    setDoc(docRef, data)
       .then(docRef => {
         console.log("A New Document Field has been added to an existing document");
         window.location.href = './results.html';
@@ -212,21 +291,9 @@ function submitForm() {
         console.log(error);
       })
 
-  console.log(docRef)
-});
-}
 
-
-    
-
-
-
-
- 
-
-
-
-
+  });
+};
 
 // MANDAR FECHA Y PUNTUACION A FIRESTORE
 
@@ -261,7 +328,7 @@ function submitForm() {
 
 
 
-
+// LLAMADA FETH A LA API
 async function questionsGenerator() {
   let response = await fetch(
     "https://opentdb.com/api.php?amount=10&category=12&difficulty=easy&type=multiple"
@@ -278,7 +345,7 @@ async function questionsGenerator() {
 
 }
 
-
+// PINTAR PREGUNTAS
 function pintarQuiz() {
   let title = preguntas[page].question;
   let correct = preguntas[page].correct_answer;
@@ -296,7 +363,6 @@ function pintarQuiz() {
   //template string para generar formulario, dentro de la función porque cuando haga el fetch es cuando se pintan
 
   let form = document.getElementById("formulario");
-  // let prueba = document.getElementById('espacio');
 
 
 
@@ -326,32 +392,6 @@ function pintarQuiz() {
 
 
 
-// funcionalidad botones 
-
-// botón log in
-// if(document.title === 'Jukebox Quiz - Home'){
-//   document
-//     .getElementById("userGame")
-//     .addEventListener("submit", function (event) {
-//       event.preventDefault();
-//       let recoveredData = JSON.parse(localStorage.getItem("players"));
-//       let nombre = event.target.nombre.value;
-//       let player = [{ name: nombre }];
-
-//       if (recoveredData === null) {
-//         localStorage.setItem("players", JSON.stringify(player));
-//       } else {
-//           let newPlayer = { name: nombre };
-
-//         recoveredData.push(newPlayer);
-//         localStorage.setItem("players", JSON.stringify(recoveredData));
-//       }
-
-//       window.location.href = './question.html';
-
-//     });
-
-// } 
 if (document.title === 'Quiz') {
   questionsGenerator().then(() => {
     pintarQuiz();
@@ -360,18 +400,59 @@ if (document.title === 'Quiz') {
 }
 
 
-//botón inicio juego
-//if(document.title === 'Jukebox Quiz - Home'){
-// document
-//   .getElementById("startQuiz")
-//   .addEventListener("click", function () {
-//     window.location.href = './question.html'
-//   });
+if (document.title === 'Jukebox Quiz - Results') {
+  let local = JSON.parse(localStorage.getItem("mails"));
+  let lastround = local[local.length - 1].score;
+  console.log(lastround)
 
-//    }
+  let meterPuntuacion = document.getElementById("meterPuntuacion");
+  meterPuntuacion.innerHTML = `You have answered ${lastround} questions correctly`
+
+  const points = document.getElementById('hallOfFame');
+  points.innerHTML = `<img class="iconLabel" src="./assets/images/icon01.png" alt="">
+  <h2 class="fontResult">Hall of Fame: </h2>`
+
+
+  local.sort(function (a, b) {
+    if (a["score"] > b["score"]) {
+      return 1;
+    }
+    if (a["score"] < b["score"]) {
+      return -1;
+    }
+
+    return 0;
+  });
 
 
 
+  const table = document.getElementById('table')
+  table.innerHTML = `                      
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>Player</th>
+                            <th>Date</th>
+                            <th>Result</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          ${local.map((local) => `
+                            <tr>
+                              <td>${local.email}</td>
+                              <td>${local.fecha}</td>
+                              <td>${local.score}</td>
+                            </tr>
+                          `).join("")}
+                        </tbody>
+                      </table>
+                    `;
+
+}
+
+
+
+//// ______________ BOTONES _____________________
 
 // FUNCIONALIDAD BOTON MUTE
 if (document.title === 'Quiz' || document.title === 'Jukebox Quiz - Results') {
@@ -386,7 +467,7 @@ if (document.title === 'Quiz' || document.title === 'Jukebox Quiz - Results') {
   });
 }
 
-// //botón back 
+// botón back 
 if (document.title === 'Quiz') {
   document.getElementById('back').addEventListener('click', function () {
     if (page > 0) {
@@ -431,10 +512,10 @@ if (document.title === 'Quiz') {
   });
 }
 
-//validaciones
 
 //botón play again
 if (document.title === 'Jukebox Quiz - Results') {
+
   document.getElementById('again').addEventListener('click', function () {
 
     window.location.href = './question.html'
@@ -446,6 +527,26 @@ if (document.title === 'Jukebox Quiz - Results') {
 }
 
 
+//BOTON REGISTRAR
+if (document.title === "Jukebox Quiz - Home") {
+  const cuadroLogin = document.querySelector("#login-form");
+  const cuadroRegistrar = document.querySelector("#signup-form");
+  const botonRegistrar = document.querySelector("#registrar");
+
+  botonRegistrar.addEventListener("click", function () {
+
+    cuadroLogin.style.display = "none";
+
+    botonRegistrar.style.display = "none";
+
+
+    cuadroRegistrar.style.display = "block";
+  });
+
+}
+
+
+
 
 
 
@@ -453,41 +554,30 @@ if (document.title === 'Jukebox Quiz - Results') {
 /*
 
 
-// TEMPLATE TABLA
-// Obtenemos las puntuaciones de los 5 mejores jugadores sea de local store o de Firenoseque
-// De momento estas para llenar la tabla y maquetar.
-// let puntuaciones = [
-//   { name: "Juan", date: "2023-10-20", result: 100 },
-//   { name: "Pedro", date: "2023-10-19", result: 90 },
-//   { name: "María", date: "2023-10-18", result: 80 },
-//   { name: "José", date: "2023-10-17", result: 70 },
-//   { name: "Ana", sate: "2023-10-16", result: 60 },
-// ];
 
-// Creamos la plantilla template string para la tabla
-// const bestPlayers = `
-//   <table>
-//     <thead>
-//       <tr>
-//         <th>Player</th>
-//         <th>Date</th>
-//         <th>Result</th>
-//       </tr>
-//     </thead>
-//     <tbody>
-//       ${puntuaciones.map((puntuacion) => `
-//         <tr>
-//           <td>${puntuacion.name}</td>
-//           <td>${puntuacion.date}</td>
-//           <td>${puntuacion.result}</td>
-//         </tr>
-//       `).join("")}
-//     </tbody>
-//   </table>
-// `;
 
-// Agregamos la tabla al DOM
-// let sectionResults = document.getElementById("sectionResults")
-// let contTable = document.getElementById("contTable")
-// contTable.innerHTML = bestPlayers;
-// sectionResults.appendChild(contTable);*/
+//TABLA MEJOR PUNTUACIÓN USUARIO
+
+
+// Poner en html el div donde ira ubicada:
+/* <div>
+<canvas id="myChart"></canvas>
+</div> */
+
+
+
+
+
+
+// script para html en la página donde se ubica
+//<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+
+
+
+
+// const ctx = document.getElementById('myChart');
+
+
+
