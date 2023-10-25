@@ -1,0 +1,396 @@
+:root {
+    --black: rgb(0, 0, 0);
+    --yellow: #fbf8cc;
+    --champagnePink: #fde4cf;
+    --teaRose: #ffcfd2;
+    --pinkLavender: #f1c0e8;
+    --mauve: #cfbaf0;
+    --jordyBlue: #a3c4f3;
+    --nonPhotoBlue: #90dbf4;
+    --electricBlue: #8eecf5;
+    --aquamarine: #98f5e1;
+    --celadon: #b9fbc0;
+}
+
+@font-face {
+    font-family: Lemonmilk;  
+    src: url(./assets/fonts/LEMONMILK.otf);
+}
+
+@font-face {
+    font-family: Notesby;  
+    src: url(./assets/fonts/Notesby.ttf);
+}
+
+@font-face {
+    font-family: Rockabilly;  
+    src: url(./assets/fonts/Rockabilly.ttf);
+}
+
+/* clase global para mostrar los elementos  */
+.show{  
+    display: block;
+}
+
+.notshow{
+    display: none;
+}
+
+body{
+    background-image: url("./assets/images/starsBlack.jpg");
+    text-align: center;
+}
+
+main{
+    width: 80%;
+    margin: auto;
+    background-color: rgba(251, 248, 204, 0.893);
+    border-radius: 30px;
+    margin-top: 10px;
+    padding: 20px;
+}
+
+label{
+    font-family: Notesby;
+    font-size: 2em;
+    margin-bottom: 10px;
+    text-align: left;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 5px;
+}
+
+label:hover{
+    background-color: var(--teaRose) !important;
+}
+
+p{
+    font-family: Notesby;
+    font-size: 2em;
+    margin: auto;
+}
+
+h1{
+    font-family: Notesby;
+    font-size: 2.4em;
+    text-align: left;
+    margin: auto;
+    margin-bottom: 20px;
+    width: 90%;
+}
+
+h3{
+    font-family:Notesby;
+    font-size: 2em;
+}
+
+.fontResult{
+    font-family: Rockabilly;
+}
+
+.quizbutton{
+    background-color: var(--nonPhotoBlue);
+    font-family: Lemonmilk;
+    font-size: 1.3em;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.quizbutton:hover{
+    background-color: var(--celadon)
+}
+
+input[type="radio"]{
+    display: none;
+}
+
+input[type="radio"]:checked + label{
+    background-color:var(--celadon) !important;
+}
+
+/* INDEX.HTML*/
+
+.userGame{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    flex-wrap: wrap;
+    background-color: #ffcfd2;
+    width: 75%;
+    margin: auto;
+    padding: 5px;
+}
+
+#star{
+    width:40%;
+
+}
+
+#headerIndex{
+    width: 90%;
+    max-height: 120px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgba(142, 236, 245, 0.842);
+    border-radius: 50px;
+
+}
+
+#imgHeader{
+    max-height: 80px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+
+}
+
+
+#signup-form{
+    display: none;
+}
+
+#scoresBox{
+   display: none;
+}
+
+#user-data{
+    display: none;
+}
+
+/* QUESTION.HTML*/
+
+nav{
+    display: flex;
+    background-color:  rgba(207, 186, 240, .8);
+    width: 80%;
+    margin: auto;
+    border-radius: 30px;
+    justify-content: space-between;
+    align-items: center;   
+    padding-left: 25px;
+    padding-right: 25px;
+
+}
+
+#formulario{
+    height: 70vh;
+}
+
+#container{
+    display: flex;
+    flex-direction: column;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+#mute{
+    display:flex;
+    align-items: center;
+}
+
+.iconLabel{
+    width: 60px;
+}
+
+#iconHome{
+    width: 100px;
+}
+
+#opt1{
+    background-color: var(--pinkLavender);
+}
+
+#opt2{
+    background-color: var(--mauve);
+}
+#opt3{
+    background-color: var(--jordyBlue);
+}
+
+#opt4{
+    background-color: var(--electricBlue); 
+}
+
+.audio{
+    display:none
+}
+
+
+/* RESULTS.HTML*/
+
+
+
+table{
+    width: auto;
+    border-color: black;
+    border-width: 1px;
+    border-style: ridge;
+    text-align: left;     
+    margin: auto;
+    border-collapse: collapse;
+    background-color: var(--teaRose)
+}
+
+
+td{
+    border-color: black;
+    border-width: 1px;
+    border-style: ridge;
+    width: 25%;
+    padding: 5px;
+    font-family: Notesby;
+    font-size: 1.4em; 
+}
+
+th{
+    background-color: var(--jordyBlue);
+    border-color: black;
+    border-width: 1px;
+    border-style: ridge;
+    padding: 5px;
+    font-family: Lemonmilk;
+    
+}
+
+#sectionResults {
+    animation-duration: 1s;
+    animation-name: slidein;
+  }
+  
+  @keyframes slidein {
+    from {
+      margin-left: 100%;
+      width: 300%;
+    }
+  
+    to {
+      margin-left: 0%;
+      width: 100%;
+    }
+}
+
+#scoresBox2{
+    display: block;
+ }
+
+#hallOfFame{
+    text-align: left;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* MEDIAQUERIES */
+
+@media(max-width: 376px){ 
+    html{
+        font-size: 10px;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+
+    label {
+        animation-duration: 1s;
+        animation-name: slidein;
+      }
+      
+      @keyframes slidein {
+        from {
+          margin-left: 100%;
+          width: 300%;
+        }
+      
+        to {
+          margin-left: 0%;
+          width: 100%;
+        }
+    }
+    
+
+}
+
+@media only screen and (min-width: 768px) {
+    body {
+        margin-top: 60px;
+    }
+    main{
+        display: flex;
+        flex-direction: row;
+        align-items: stretch
+
+    }
+    .quizbutton{
+        font-size: 1em;
+    }
+
+    #bienvenida{
+        padding: 15px;
+        margin-right: 5px;
+    }
+
+    #scoresBox{
+        background-color: var(--aquamarine);
+        padding: 20px;
+        border-radius: 15px;   
+    }
+
+    #scoresBox2{
+        background-color: var(--aquamarine);
+        padding: 20px;
+        border-radius: 15px;   
+    }
+
+    #sectionResults{
+        width: 70%;
+        margin-right: 20px;
+
+    }
+
+    #formulario{
+        max-height: 500px;
+    }
+
+    #container {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+    }
+
+
+
+    h1{
+
+        text-align: center;
+        margin-bottom: 35px;
+
+
+    }
+
+    .answers{
+        width: 40%;
+        min-height: 120px;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        font-size: 2.1em;
+        
+    }
+
+    .iconLabel{
+        width: 80px;
+    }
+  
+
+}
+
+
+
+@media only screen and (min-width: 1366px) {
+
+   
+
+}
