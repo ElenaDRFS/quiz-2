@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut} from "https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js";
 import { getFirestore, collection, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-storage.js";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -36,108 +36,142 @@ let score = 0;
 let fecha = new Date;
 fecha = fecha.toLocaleString();
 
-if (document.title == "Jukebox Quiz - Home"){
+//if (document.title == "Jukebox Quiz - Home"){
 //Selectores
 const signUpForm = document.getElementById('signup-form');
 const loginForm = document.getElementById('login-form');
 const logout = document.getElementById('logout');
+let loginEmail;
 
 console.log(signUpForm, loginForm);
 
+if (document.title == "Jukebox Quiz - Home") {
+
+  //SignUp function
+  signUpForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    let signUpEmail = document.getElementById('signup-email').value;
+
+    //almacenamos ese email en LOCALSTORAGE
+    let guardar = JSON.parse(localStorage.getItem("emails"));
+    let mail = [{ email: signUpEmail }];
+
+    if (guardar === null) {
+      localStorage.setItem("emails", JSON.stringify(mail));
+    } else {
+      let newEmail = { email: signUpEmail };
+
+      guardar.push(newEmail);
+      localStorage.setItem("mails", JSON.stringify(guardar));
+    }
 
 
-//SignUp function
-signUpForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const signUpEmail = document.getElementById('signup-email').value;
-  const signUpPassword = document.getElementById('signup-pass').value;
-  const signUpUser = document.getElementById('signup-user').value;
-  const usersRef = collection(db, "users");
-  let playDate = fecha;
-  let points = 0;
+    const signUpPassword = document.getElementById('signup-pass').value;
+    const signUpUser = document.getElementById('signup-user').value;
+    const usersRef = collection(db, "users");
 
-  try {
-    //Create auth user
-    await createUserWithEmailAndPassword(auth, signUpEmail, signUpPassword)
-    .then((userCredential) => {
-      console.log('User registered')
-      const user = userCredential.user;
-      signUpForm.reset();
-    })
-    //Create document in DB
-    await setDoc(doc(usersRef, signUpEmail, playDate, points), {
-      username: signUpUser,
-      email: signUpEmail,
-      date : [],
-      score : []
-    })
-  } catch (error) {
-    console.log('Error: ', error)
-  }
-      
-})
+    try {
+      //Create auth user
+      await createUserWithEmailAndPassword(auth, signUpEmail, signUpPassword)
+        .then((userCredential) => {
+          console.log('User registered')
+          const user = userCredential.user;
+          signUpForm.reset();
+        })
+      //Create document in DB
+      await setDoc(doc(usersRef, signUpEmail), {
+        username: signUpUser,
+        email: signUpEmail,
+        date:[],
+        scores: []
+      })
+    } catch (error) {
+      console.log('Error: ', error)
+    }
+
+  })
 
 
-//Login function
-loginForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const loginEmail = document.getElementById('login-email').value;
-  const loginPassword = document.getElementById('login-pass').value;
-  let userData = document.getElementById('user-data');
-  console.log(userData);
-  //Call the collection in the DB
-  const docRef = doc(db, "users", loginEmail);
-  //Search a document that matches with our ref
-  const docSnap = await getDoc(docRef);
+  //Login function
+  loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    loginEmail = document.getElementById('login-email').value;
 
-  signInWithEmailAndPassword(auth, loginEmail, loginPassword)
-    .then((userCredential) => {
-      console.log(userCredential);
-      console.log('User authenticated')
-      loginForm.reset();
-    })
-    .then(() => {
 
-      if (docSnap.exists()) {
-        userData.style.cssText = 'background-color: #73AB84;width: 50%;margin: 2rem auto;padding: 1rem;border-radius: 5px;display: flex;flex-direction: column;align-items: center';
-        userData.innerHTML = `<h3>Welcome!</h3>
+
+    //almacenamos ese mail en LOCAL STORAGE
+    let guardar = JSON.parse(localStorage.getItem("emails"));
+    let mail = [{ email: loginEmail }];
+
+    if (guardar === null) {
+      localStorage.setItem("emails", JSON.stringify(mail));
+    } else {
+      let newEmail = { email: loginEmail };
+
+      guardar.push(newEmail);
+      localStorage.setItem("mails", JSON.stringify(guardar));
+    }
+
+
+
+    const loginPassword = document.getElementById('login-pass').value;
+    let userData = document.getElementById('user-data');
+    console.log(userData);
+    //Call the collection in the DB
+    const docRef = doc(db, "users", loginEmail);
+    //Search a document that matches with our ref
+    const docSnap = await getDoc(docRef);
+
+    signInWithEmailAndPassword(auth, loginEmail, loginPassword)
+      .then((userCredential) => {
+        console.log(userCredential);
+        console.log('User authenticated')
+        loginForm.reset();
+      })
+      .then(() => {
+
+        if (docSnap.exists()) {
+          userData.style.cssText = 'background-color: #73AB84;width: 50%;margin: 2rem auto;padding: 1rem;border-radius: 5px;display: flex;flex-direction: column;align-items: center';
+          userData.innerHTML = `<h3>Welcome!</h3>
                               <p>Username: ${docSnap.data().username}</p>
                               <p>Email: ${docSnap.data().email}</p>
                               <p>Now you are ready to play!</p>
                               <button id="startQuiz"class="quizbutton" type="click"><a href="./question.html">Play!</a></button>
                              `
-      } else {
-        console.log("No such document!");
-    }})
-    .catch((error) => {
-      document.getElementById('msgerr').innerHTML='Invalid user or password';
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log('Código del error: ' + errorCode);
-      console.log('Mensaje del error: ' + errorMessage);
+        } else {
+          console.log("No such document!");
+        }
+      })
+      .catch((error) => {
+        document.getElementById('msgerr').innerHTML = 'Invalid user or password';
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log('Código del error: ' + errorCode);
+        console.log('Mensaje del error: ' + errorMessage);
+      });
+  })
+
+  //Logout function
+  logout.addEventListener('click', () => {
+    let userData = document.getElementById('user-data');
+    signOut(auth).then(() => {
+      console.log('Logout user')
+      userData.style.cssText = '';
+      userData.innerHTML = ``;
+    }).catch((error) => {
+      console.log('Error: ', error)
     });
-})
+  })
 
-//Logout function
-logout.addEventListener('click', () => {
-  let userData = document.getElementById('user-data');
-  signOut(auth).then(() => {
-    console.log('Logout user')
-    userData.style.cssText = '';
-    userData.innerHTML = ``;
-  }).catch((error) => {
-    console.log('Error: ', error)
-  });
-})
-
-//Observe the user's state
-auth.onAuthStateChanged(user => {
-  if(user){
-    console.log('Logged user');
-  }else{
-    console.log('No logged user');
-  }
-})
+  //Observe the user's state
+  auth.onAuthStateChanged(user => {
+    if (user) {
+      console.log('Logged user');
+    } else {
+      console.log('No logged user');
+    }
+  })
 
 }
 
@@ -150,37 +184,59 @@ auth.onAuthStateChanged(user => {
 
 
 //VALIDA PREGUNTAS Y MANDA A FIRESTORE
-function submitForm(){
-  document.getElementById("check").addEventListener('click',function(event){
+function submitForm() {
+  document.getElementById("check").addEventListener('click', async function (event) {
     event.preventDefault();
     let respuesta = document.querySelector(`input[name=answer]:checked`).value;
-    if(respuesta == "r3"){
+    if (respuesta == "r3") {
       score++
       console.log(score);
-    } 
-     
-    window.location.href = './results.html';
+    }
 
-    var baseDatos = db.collection("users").doc("tecnicos@gmail.com");
+    let playersMails = JSON.parse(localStorage.getItem("emails"));
+    let ultimo = playersMails[playersMails.length - 1].email;
 
-    return baseDatos.update({
-      fecha: true,
-      score: true
-    })
-      .then(() => {
-        console.log("Document successfully updated!");
+    const docRef = doc(db, "users", ultimo);
+
+    const data = {
+      date: fecha,
+      scores: score
+    };
+
+    updateDoc(docRef, data)
+      .then(docRef => {
+        console.log("A New Document Field has been added to an existing document");
+        window.location.href = './results.html';
       })
-      .catch((error) => {
-        // The document probably doesn't exist.
-        console.error("Error updating document: ", error);
-      });
-   
-  })
+      .catch(error => {
+        console.log(error);
+      })
 
-
-  
-  
+  console.log(docRef)
+});
 }
+
+
+    
+
+
+
+
+ 
+
+
+
+
+
+// MANDAR FECHA Y PUNTUACION A FIRESTORE
+
+
+// const dbRef = ref(db, `users/${loginEmail}`)
+// update(dbRef, {date:[fecha], scores:[score]}).then(() => {
+//   console.log("Data updated");
+// }).catch((e) => {
+//   console.log(e);
+// });
 
 // function recopilarDatos(){
 //   let almacenado = JSON.parse(localStorage.getItem('players'));
@@ -194,7 +250,7 @@ function submitForm(){
 // almacenado[almacenado.length-1] = character;
 // localStorage.setItem("players", JSON.stringify(almacenado));
 
- 
+
 // }
 
 // function updateFirebase () {
@@ -214,16 +270,16 @@ async function questionsGenerator() {
   preguntas = data.results;
   preguntas.forEach(element => {
     correctas.push(element.correct_answer);
-    
+
   });
 
   console.log(preguntas)
   console.log(correctas)
-  
+
 }
 
 
-function pintarQuiz() {    
+function pintarQuiz() {
   let title = preguntas[page].question;
   let correct = preguntas[page].correct_answer;
   let incorrect = preguntas[page].incorrect_answers;
@@ -233,7 +289,7 @@ function pintarQuiz() {
   function randomizar(indicesRespuestas) {
     indicesRespuestas.sort(() => Math.random() - 0.5);
   }
-  
+
   let i = [0, 1, 2, 3];
   randomizar(i);
 
@@ -244,7 +300,7 @@ function pintarQuiz() {
 
 
 
-  
+
 
   form.innerHTML = `<section id="container">
                   <h1>${title}</h1>
@@ -265,7 +321,7 @@ function pintarQuiz() {
                   
                   </section>`
 
-  
+
 }
 
 
@@ -281,115 +337,117 @@ function pintarQuiz() {
 //       let recoveredData = JSON.parse(localStorage.getItem("players"));
 //       let nombre = event.target.nombre.value;
 //       let player = [{ name: nombre }];
-      
+
 //       if (recoveredData === null) {
 //         localStorage.setItem("players", JSON.stringify(player));
 //       } else {
 //           let newPlayer = { name: nombre };
-        
+
 //         recoveredData.push(newPlayer);
 //         localStorage.setItem("players", JSON.stringify(recoveredData));
 //       }
 
 //       window.location.href = './question.html';
-      
+
 //     });
 
 // } 
- if(document.title === 'Quiz'){
-    questionsGenerator().then(()=>{
+if (document.title === 'Quiz') {
+  questionsGenerator().then(() => {
     pintarQuiz();
-    })
-  
-  }
+  })
+
+}
 
 
 //botón inicio juego
 //if(document.title === 'Jukebox Quiz - Home'){
-    // document
-    //   .getElementById("startQuiz")
-    //   .addEventListener("click", function () {
-    //     window.location.href = './question.html'
-    //   });
+// document
+//   .getElementById("startQuiz")
+//   .addEventListener("click", function () {
+//     window.location.href = './question.html'
+//   });
 
 //    }
-        
+
 
 
 
 // FUNCIONALIDAD BOTON MUTE
-if(document.title === 'Quiz' || document.title === 'Jukebox Quiz - Results' ){
-let audio = document.getElementsByClassName("audio");
-let mute = document.getElementsByClassName("muteButton");
-mute[0].addEventListener("click", function() {
+if (document.title === 'Quiz' || document.title === 'Jukebox Quiz - Results') {
+  let audio = document.getElementsByClassName("audio");
+  let mute = document.getElementsByClassName("muteButton");
+  mute[0].addEventListener("click", function () {
     if (audio[0].muted == true) {
-        audio[0].muted = false;
+      audio[0].muted = false;
     } else {
-        audio[0].muted = true;
-    };}); 
-  }
+      audio[0].muted = true;
+    };
+  });
+}
 
 // //botón back 
-if(document.title === 'Quiz'){ 
-  document.getElementById('back').addEventListener('click',function(){
-   if (page > 0){
-    page--;
-   }
-   
-   if (score > 0) {
-    score --;
-   };
+if (document.title === 'Quiz') {
+  document.getElementById('back').addEventListener('click', function () {
+    if (page > 0) {
+      page--;
+    }
+
+    if (score > 0) {
+      score--;
+    };
 
     pintarQuiz();
   }
-)};
-  
+  )
+};
+
 
 //boton next 
 
-if(document.title === 'Quiz'){ 
-document.getElementById('next').addEventListener('click',function(){
-  let respuesta = document.querySelector(`input[name=answer]:checked`).value
-  console.log(respuesta);
-  if(respuesta == "r3"){
-    score++
-    console.log(score);
-  } 
-       
-  page++
-  console.log(page)
-  
-  pintarQuiz();
-  if(page === 9){
-    document.getElementById('back').style.display = 'none';
-    document.getElementById('next').style.display = 'none';
-    document.getElementById('check').classList.remove('notshow');
-    page = 0;
+if (document.title === 'Quiz') {
+  document.getElementById('next').addEventListener('click', function () {
+    let respuesta = document.querySelector(`input[name=answer]:checked`).value
+    console.log(respuesta);
+    if (respuesta == "r3") {
+      score++
+      console.log(score);
+    }
+
+    page++
     console.log(page)
-    submitForm();
-         
-  }
-  
-});
+
+    pintarQuiz();
+    if (page === 9) {
+      document.getElementById('back').style.display = 'none';
+      document.getElementById('next').style.display = 'none';
+      document.getElementById('check').classList.remove('notshow');
+      page = 0;
+      console.log(page)
+      submitForm();
+
+    }
+
+  });
 }
 
 //validaciones
 
 //botón play again
-if(document.title === 'Jukebox Quiz - Results'){
-  document.getElementById('again').addEventListener('click', function(){
-   
+if (document.title === 'Jukebox Quiz - Results') {
+  document.getElementById('again').addEventListener('click', function () {
+
     window.location.href = './question.html'
 
   })
 
-  
+
 
 }
 
-  
 
-  
+
+
 
 
 /*
