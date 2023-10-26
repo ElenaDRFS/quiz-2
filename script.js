@@ -38,6 +38,7 @@ fecha = fecha.toDateString();
 
 
 
+
 //// ______________ REGISTO LOGIN Y AUTENTICATION _____________________
 
 
@@ -424,7 +425,7 @@ if (document.title === 'Jukebox Quiz - Results') {
     return 0;
   });
 
-
+  local = local.slice(0, 5);
 
   const table = document.getElementById('table')
   table.innerHTML = `                      
