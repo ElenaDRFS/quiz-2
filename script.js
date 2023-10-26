@@ -38,6 +38,7 @@ fecha = fecha.toDateString();
 
 
 
+
 //// ______________ REGISTO LOGIN Y AUTENTICATION _____________________
 
 
@@ -185,10 +186,10 @@ if (document.title == "Jukebox Quiz - Home") {
           new Chart(ctx, {
             type: 'bar',
             data: {
-              labels: [`${fechasGrafica[0]}`, `${fechasGrafica[1]}`, `${fechasGrafica[2]}`, `${fechasGrafica[3]}`, `${fechasGrafica[4]}`],
+              labels: [`${fechasGrafica[0]}`, `${fechasGrafica[1]}`, `${fechasGrafica[2]}`, `${fechasGrafica[3]}`],
               datasets: [{
                 label: 'Correct Answers',
-                data: [`${scoreGrafica[0]}`, `${scoreGrafica[1]}`, `${scoreGrafica[2]}`, `${scoreGrafica[3]}`, `${scoreGrafica[4]}`],
+                data: [`${scoreGrafica[0]}`, `${scoreGrafica[1]}`, `${scoreGrafica[2]}`, `${scoreGrafica[3]}`],
                 borderWidth: 1
               }]
             },
@@ -295,36 +296,6 @@ function submitForm() {
   });
 };
 
-// MANDAR FECHA Y PUNTUACION A FIRESTORE
-
-
-// const dbRef = ref(db, `users/${loginEmail}`)
-// update(dbRef, {date:[fecha], scores:[score]}).then(() => {
-//   console.log("Data updated");
-// }).catch((e) => {
-//   console.log(e);
-// });
-
-// function recopilarDatos(){
-//   let almacenado = JSON.parse(localStorage.getItem('players'));
-//   let ultimo = almacenado[almacenado.length-1];
-//   let fechaScore = {
-//     fecha : fecha.toLocaleDateString(),
-//     score : score
-//   }
-//   const character = Object.assign(ultimo, fechaScore);
-
-// almacenado[almacenado.length-1] = character;
-// localStorage.setItem("players", JSON.stringify(almacenado));
-
-
-// }
-
-// function updateFirebase () {
-
-
-
-// }
 
 
 
@@ -405,6 +376,12 @@ if (document.title === 'Jukebox Quiz - Results') {
   let lastround = local[local.length - 1].score;
   console.log(lastround)
 
+for (let x =0; x<local.length ; x++){
+  if (local[x].score == undefined){ 
+  local.splice(x, 1)
+  }
+}
+
   let meterPuntuacion = document.getElementById("meterPuntuacion");
   meterPuntuacion.innerHTML = `You have answered ${lastround} questions correctly`
 
@@ -424,7 +401,7 @@ if (document.title === 'Jukebox Quiz - Results') {
     return 0;
   });
 
-
+  local = local.slice(0, 5);
 
   const table = document.getElementById('table')
   table.innerHTML = `                      
@@ -546,38 +523,6 @@ if (document.title === "Jukebox Quiz - Home") {
 }
 
 
-
-
-
-
-
-/*
-
-
-
-
-//TABLA MEJOR PUNTUACIÓN USUARIO
-
-
-// Poner en html el div donde ira ubicada:
-/* <div>
-<canvas id="myChart"></canvas>
-</div> */
-
-
-
-
-
-
-// script para html en la página donde se ubica
-//<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-
-
-
-
-
-// const ctx = document.getElementById('myChart');
 
 
 
