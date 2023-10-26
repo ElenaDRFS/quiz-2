@@ -12,7 +12,7 @@ Responde todas las preguntas una por una y chequea tus resultados al final... ve
 
 
 ## Aspectos técnicos ##
-Este repositorio está formado por 3 remas en las que se ha ido trabajando en equipo de 2 para facilitar el trabajo y potenciar la cooperación y trabajo en el grupo. 
+Este repositorio está formado por 3 ramas en las que se ha ido trabajando en equipo de 2 para facilitar el trabajo y potenciar la cooperación y trabajo en el grupo. 
 
 Encontrarás 3 archivos html que organizan las pantallas de registro, de juego y de resultados. El diseño de las preguntas es SPA, por lo que se pintan a través de un template desde el script. 
 
